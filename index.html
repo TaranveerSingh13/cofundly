@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cofundly — Find a business partner or investor in the UAE</title>
+<style>
+  :root{
+    --bg:#f5f8fd; --bg2:#eef3fa; --card:#ffffff; --line:#e3e9f3;
+    --txt:#16213a; --muted:#5f6f8c; --brand:#2563eb; --brand2:#0e9f8e;
+    --gold:#c98309; --danger:#e25555; --radius:14px;
+    --shadow:0 1px 3px rgba(20,40,80,.06),0 6px 22px rgba(20,40,80,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1100px 560px at 82% -12%,#e6efff 0,transparent 60%),var(--bg);
+    background-color:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased}
+  a{color:var(--brand);text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+  /* top bar */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:14px;height:62px}
+  .logo{font-weight:800;font-size:20px;letter-spacing:-.3px;cursor:pointer;display:flex;align-items:center;gap:8px}
+  .logo .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2))}
+  .nav .spacer{flex:1}
+  .pill{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;
+    font-weight:600;font-size:15px;padding:12px 18px;border-radius:11px;color:#fff;
+    background:linear-gradient(135deg,var(--brand),#3b6fe0);transition:.15s transform,.15s opacity}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.sec{background:transparent;border:1px solid var(--line);color:var(--txt)}
+  .btn.ghost{background:transparent;color:var(--brand);padding:10px 12px}
+  .btn.sm{padding:8px 13px;font-size:13px}
+  .btn.block{width:100%}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  /* hero */
+  .hero{padding:72px 0 48px;text-align:center}
+  .hero h1{font-size:46px;line-height:1.05;margin:0 0 16px;letter-spacing:-1.2px;font-weight:850}
+  .hero h1 span{background:linear-gradient(135deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{font-size:19px;color:var(--muted);max-width:620px;margin:0 auto 30px;line-height:1.5}
+  .hero .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .trust{display:flex;gap:26px;justify-content:center;margin-top:40px;flex-wrap:wrap;color:var(--muted);font-size:14px}
+  .trust b{color:var(--txt)}
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:54px 0}
+  .how .step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+  .how .num{width:30px;height:30px;border-radius:8px;background:rgba(79,140,255,.15);color:var(--brand);
+    display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:12px}
+  .how h3{margin:0 0 6px;font-size:17px}
+  .how p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+  .waitlist{max-width:560px;margin:10px auto 40px;background:linear-gradient(135deg,#eef4ff,#eafaf6);
+    border:1px solid var(--line);border-radius:18px;padding:34px 28px;text-align:center;box-shadow:var(--shadow)}
+  .waitlist h2{margin:0 0 8px;font-size:24px;letter-spacing:-.4px}
+  .waitlist p{margin:0 0 20px;color:var(--muted);font-size:15px}
+  .waitlist form{display:flex;gap:10px;max-width:440px;margin:0 auto}
+  .waitlist input{flex:1}
+  .wlMsg{margin-top:14px;font-size:14px;font-weight:600;color:var(--brand2);min-height:18px}
+  @media(max-width:520px){.waitlist form{flex-direction:column}}
+  .disclaimer{text-align:center;color:var(--muted);font-size:12.5px;max-width:680px;margin:8px auto 60px;line-height:1.6;
+    border-top:1px solid var(--line);padding-top:24px}
+  /* generic page */
+  .page{display:none;padding:34px 0 80px}
+  .page.active{display:block}
+  h2.title{font-size:28px;margin:0 0 6px;letter-spacing:-.5px}
+  .sub{color:var(--muted);margin:0 0 26px;font-size:15px}
+  /* role choose */
+  .roles{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:760px;margin:30px auto}
+  .role{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:30px;cursor:pointer;transition:.15s;box-shadow:var(--shadow)}
+  .role:hover{border-color:var(--brand);transform:translateY(-2px)}
+  .role .emo{font-size:40px}
+  .role h3{margin:14px 0 8px;font-size:21px}
+  .role p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.5}
+  /* form */
+  .form{max-width:620px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow)}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:7px;color:var(--txt)}
+  .field .hint{color:var(--muted);font-weight:400;font-size:12.5px}
+  input,select,textarea{width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--txt);
+    padding:12px 13px;border-radius:10px;font-size:15px;font-family:inherit}
+  textarea{resize:vertical;min-height:84px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand)}
+  .seg{display:flex;gap:10px}
+  .seg .opt{flex:1;text-align:center;padding:12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;font-size:14px;background:var(--bg2)}
+  .seg .opt.on{border-color:var(--brand);background:rgba(79,140,255,.12);color:#fff;font-weight:600}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  /* directory */
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+  .toolbar .search{flex:1;min-width:220px;position:relative}
+  .toolbar select{width:auto;min-width:150px}
+  .seg.mini .opt{padding:9px 14px;font-size:13px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:.15s}
+  .card:hover{box-shadow:0 4px 10px rgba(20,40,80,.08),0 14px 40px rgba(20,40,80,.10);transform:translateY(-2px)}
+  .card .top{display:flex;gap:12px;align-items:flex-start}
+  .avatar{width:46px;height:46px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:18px;color:#fff}
+  .card h3{margin:0;font-size:17px;display:flex;align-items:center;gap:7px}
+  .verified{color:var(--brand2);font-size:13px;display:inline-flex;align-items:center;gap:3px}
+  .card .meta{color:var(--muted);font-size:13px;margin-top:2px}
+  .tags{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+  .tag{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--bg2);border:1px solid var(--line);color:var(--muted)}
+  .tag.brand{background:rgba(79,140,255,.13);border-color:transparent;color:#9cc0ff}
+  .tag.gold{background:rgba(247,185,85,.13);border-color:transparent;color:var(--gold)}
+  .card .pitch{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 16px;flex:1}
+  .card .foot{display:flex;gap:10px;align-items:center}
+  .amount{font-weight:700;font-size:15px}
+  .empty{text-align:center;color:var(--muted);padding:60px 0}
+  /* detail + chat modal */
+  .modal{position:fixed;inset:0;z-index:100;background:rgba(5,8,16,.7);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;padding:18px}
+  .modal.open{display:flex}
+  .sheet{background:var(--bg2);border:1px solid var(--line);border-radius:18px;max-width:540px;width:100%;
+    max-height:88vh;overflow:auto;padding:26px;position:relative}
+  .sheet .x{position:absolute;top:16px;right:18px;cursor:pointer;color:var(--muted);font-size:22px;border:0;background:0}
+  .kv{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+  .kv .k{color:var(--muted)}
+  /* chat */
+  .chat{height:300px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;margin:14px 0;display:flex;flex-direction:column;gap:10px}
+  .bub{max-width:78%;padding:10px 13px;border-radius:13px;font-size:14px;line-height:1.4}
+  .bub.them{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+  .bub.me{align-self:flex-end;background:linear-gradient(135deg,var(--brand),#3b6fe0);color:#fff;border-bottom-right-radius:4px}
+  .chatbar{display:flex;gap:8px}
+  .offplat{font-size:12px;color:var(--gold);background:rgba(247,185,85,.1);border:1px solid rgba(247,185,85,.25);
+    padding:9px 12px;border-radius:10px;margin-bottom:12px;line-height:1.4}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--card);
+    border:1px solid var(--line);padding:13px 20px;border-radius:12px;z-index:200;transition:.3s;font-size:14px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  @media(max-width:720px){
+    .hero h1{font-size:34px}.how,.grid,.roles{grid-template-columns:1fr}
+    .row2{grid-template-columns:1fr}.toolbar select{flex:1}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo" onclick="go('home')"><span class="dot"></span>Cofundly</div>
+    <span class="pill">UAE · Prototype</span>
+    <div class="spacer"></div>
+    <button class="btn sec sm" id="navBrowse" onclick="go('directory')">Browse</button>
+    <button class="btn sm" id="navJoin" onclick="go('role')">Join free</button>
+  </div>
+</header>
+
+<!-- ============ HOME ============ -->
+<section class="page active" id="page-home">
+  <div class="wrap">
+    <div class="hero">
+      <h1>Find a <span>business partner</span> or <span>investor</span><br>in the UAE</h1>
+      <p>Cofundly is a trusted, verified directory for entrepreneurs and investors.
+         List what you offer or what you seek — and connect directly. No middlemen.</p>
+      <div class="cta">
+        <button class="btn" onclick="go('role')">Get started — it's free</button>
+        <button class="btn sec" onclick="go('directory')">Browse the directory</button>
+      </div>
+      <div class="trust">
+        <div>✅ <b>Verified</b> profiles</div>
+        <div>🤝 <b>Invest</b> or <b>Partner</b></div>
+        <div>🌍 <b>All</b> communities</div>
+        <div>🔒 You stay in <b>control</b></div>
+      </div>
+    </div>
+
+    <div class="how">
+      <div class="step"><div class="num">1</div><h3>Pick your side</h3>
+        <p>Tell us if you want to <b>invest / partner</b> in a business, or you're <b>seeking</b> investment or a partner.</p></div>
+      <div class="step"><div class="num">2</div><h3>Browse & filter</h3>
+        <p>Search verified profiles by industry, amount and location. Find people who match exactly what you need.</p></div>
+      <div class="step"><div class="num">3</div><h3>Connect directly</h3>
+        <p>Express interest, chat, then take verification and any agreement <b>off-platform</b>, on your terms.</p></div>
+    </div>
+
+    <div class="waitlist" id="waitlist">
+      <h2>Be the first to find your partner</h2>
+      <p>Cofundly is launching soon in the UAE. Join the waitlist and we'll invite you in early.</p>
+      <form id="wlForm" onsubmit="return joinWaitlist(event)">
+        <input id="wlEmail" name="email" type="email" required placeholder="Your email address" />
+        <button class="btn" type="submit">Join the waitlist</button>
+      </form>
+      <div class="wlMsg" id="wlMsg"></div>
+    </div>
+
+    <p class="disclaimer">
+      Cofundly is a networking and introduction platform only. We do not handle money, hold funds,
+      provide investment advice, or facilitate agreements. All due diligence, verification of identity,
+      and any contracts happen directly between users, off-platform. Users are responsible for their own decisions.
+    </p>
+  </div>
+</section>
+
+<!-- ============ ROLE ============ -->
+<section class="page" id="page-role">
+  <div class="wrap">
+    <h2 class="title" style="text-align:center">What brings you here?</h2>
+    <p class="sub" style="text-align:center">You can switch or add the other side later.</p>
+    <div class="roles">
+      <div class="role" onclick="chooseRole('investor')">
+        <div class="emo">💰</div>
+        <h3>I want to Invest or Partner</h3>
+        <p>You have capital, skills or experience and want to back or join a promising business.</p>
+      </div>
+      <div class="role" onclick="chooseRole('founder')">
+        <div class="emo">🚀</div>
+        <h3>I'm Seeking Investment or a Partner</h3>
+        <p>You have a business or idea and need funding, a partner, or hands-on help to grow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROFILE FORM ============ -->
+<section class="page" id="page-profile">
+  <div class="wrap">
+    <h2 class="title" style="text-align:center" id="formTitle">Create your profile</h2>
+    <p class="sub" style="text-align:center">This is a prototype — nothing is saved to a server.</p>
+    <div class="form" id="formBody"></div>
+  </div>
+</section>
+
+<!-- ============ DIRECTORY ============ -->
+<section class="page" id="page-directory">
+  <div class="wrap">
+    <h2 class="title">Directory</h2>
+    <p class="sub" id="dirSub">Browse verified businesses and investors across every community.</p>
+
+    <div class="toolbar">
+      <div class="seg mini" id="sideFilter">
+        <div class="opt on" data-side="founder" onclick="setSide('founder')">🚀 Businesses</div>
+        <div class="opt" data-side="investor" onclick="setSide('investor')">💰 Investors</div>
+      </div>
+      <div class="search"><input id="q" placeholder="Search name, business, keyword…" oninput="render()" /></div>
+      <select id="fIndustry" onchange="render()"><option value="">All industries</option></select>
+      <select id="fType" onchange="render()">
+        <option value="">Invest & Partner</option>
+        <option value="invest">Invest only</option>
+        <option value="partner">Partner only</option>
+      </select>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" style="display:none">No matches. Try clearing a filter.</div>
+  </div>
+</section>
+
+<!-- detail / chat modal -->
+<div class="modal" id="modal">
+  <div class="sheet" id="sheet"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- sample data (all communities) ---------------- */
+const INDUSTRIES = ["F&B / Restaurant","Retail / Trading","Technology","Beauty / Wellness","Logistics","Real Estate","Education","Healthcare","Manufacturing","E-commerce"];
+const COLORS = ["#4f8cff","#23c4a3","#f7b955","#ff6b9d","#a78bfa","#34d399","#fb923c","#60a5fa"];
+const C = i => COLORS[i % COLORS.length];
+
+const FOUNDERS = [
+  {n:"Aisha Karim",b:"Cloud Kitchen — Pan-Asian",ind:"F&B / Restaurant",stage:"Running",seek:"invest",amt:"AED 150K–250K",loc:"Dubai",v:true,p:"Profitable cloud kitchen doing 1,800 orders/mo. Raising to add 2 more locations across Dubai.",city:"Dubai"},
+  {n:"Marco Bianchi",b:"EV Scooter Rentals",ind:"Logistics",stage:"Idea",seek:"partner",amt:"AED 300K",loc:"Abu Dhabi",v:false,p:"Looking for an operations partner with UAE logistics experience to launch last-mile EV rentals.",city:"Abu Dhabi"},
+  {n:"Priya Nair",b:"Organic Skincare Brand",ind:"Beauty / Wellness",stage:"Running",seek:"invest",amt:"AED 80K–120K",loc:"Dubai",v:true,p:"D2C skincare, 4.8★, 6k customers. Need capital for retail shelf placement & marketing.",city:"Dubai"},
+  {n:"Omar Haddad",b:"B2B Spare Parts Marketplace",ind:"E-commerce",stage:"Running",seek:"partner",amt:"AED 500K",loc:"Sharjah",v:true,p:"Online marketplace for auto spare parts. Seeking tech-savvy partner to scale the platform.",city:"Sharjah"},
+  {n:"Chen Wei",b:"Bubble Tea Franchise",ind:"F&B / Restaurant",stage:"Expanding",seek:"invest",amt:"AED 200K",loc:"Dubai",v:false,p:"3 outlets running well. Raising to open 4th flagship store in Dubai Mall area.",city:"Dubai"},
+  {n:"Fatima Al-Sayed",b:"Kids Coding Academy",ind:"Education",stage:"Running",seek:"partner",amt:"AED 100K",loc:"Dubai",v:true,p:"After-school coding for kids 8–14. Want an education partner to franchise across the GCC.",city:"Dubai"},
+  {n:"David Okoye",b:"African Grocery Import",ind:"Retail / Trading",stage:"Idea",seek:"invest",amt:"AED 250K",loc:"Dubai",v:false,p:"Importing specialty African foods for the diaspora. Have suppliers, need working capital.",city:"Dubai"},
+  {n:"Sana Iqbal",b:"Telehealth for Women",ind:"Healthcare",stage:"Running",seek:"invest",amt:"AED 400K–600K",loc:"Dubai",v:true,p:"Teleconsultation app for women's health. 12k users. Raising seed to add insurance partners.",city:"Dubai"},
+];
+const INVESTORS = [
+  {n:"Rajesh Mehta",off:"both",bud:"AED 100K–500K",ind:"F&B / Restaurant",mode:"active",loc:"Dubai",v:true,p:"Restaurant operator turned investor. Happy to put in money AND hands-on F&B expertise.",city:"Dubai"},
+  {n:"Sarah Lindgren",off:"money",bud:"AED 250K–1M",ind:"Technology",mode:"passive",loc:"Dubai",v:true,p:"Angel investor, ex-fintech. Passive cheques into tech & e-commerce with a clear path to revenue.",city:"Dubai"},
+  {n:"Khalid Al-Mansoori",off:"both",bud:"AED 500K–2M",ind:"Real Estate",mode:"active",loc:"Abu Dhabi",v:true,p:"Local investor with strong UAE network. Open to partnerships in real estate & retail.",city:"Abu Dhabi"},
+  {n:"Lina Park",off:"skills",bud:"—",ind:"Beauty / Wellness",mode:"active",loc:"Dubai",v:false,p:"Marketing & brand operator. I trade sweat equity — I grow your brand for a stake, not cash.",city:"Dubai"},
+  {n:"Ahmed Farouk",off:"money",bud:"AED 50K–150K",ind:"Logistics",mode:"passive",loc:"Sharjah",v:false,p:"Small-ticket angel. Like logistics, trading and SME businesses with proven cashflow.",city:"Sharjah"},
+  {n:"Grace Mwangi",off:"both",bud:"AED 100K–300K",ind:"Education",mode:"active",loc:"Dubai",v:true,p:"EdTech founder, exited. Invest plus mentor in education & kids-focused businesses.",city:"Dubai"},
+];
+
+/* role labels */
+const TYPE_LABEL = {invest:"Open to Investment",partner:"Open to Partner",both:"Invest & Partner"};
+const OFFER_LABEL = {money:"Capital",skills:"Skills & Time",both:"Capital + Skills"};
+
+/* ---------------- routing ---------------- */
+let curSide = "founder";
+function go(p){
+  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo(0,0);
+  if(p==='directory') render();
+}
+function chooseRole(r){ buildForm(r); go('profile'); }
+
+/* ---------------- profile form ---------------- */
+function buildForm(role){
+  document.getElementById('formTitle').textContent =
+    role==='investor' ? "Set up your Investor profile" : "Set up your Business profile";
+  const f = document.getElementById('formBody');
+  const industryOpts = INDUSTRIES.map(i=>`<option>${i}</option>`).join('');
+  if(role==='founder'){
+    f.innerHTML = `
+      <div class="field"><label>Your name</label><input placeholder="e.g. Aisha Karim"></div>
+      <div class="field"><label>Business name / idea</label><input placeholder="e.g. Cloud Kitchen — Pan-Asian"></div>
+      <div class="field"><label>Industry</label><select>${industryOpts}</select></div>
+      <div class="row2">
+        <div class="field"><label>Stage</label><select><option>Idea</option><option>Running</option><option>Expanding</option></select></div>
+        <div class="field"><label>Location</label><select><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Other UAE</option></select></div>
+      </div>
+      <div class="field"><label>What are you seeking?</label>
+        <div class="seg" data-name="seek">
+          <div class="opt on" onclick="pick(this)">💰 Investment</div>
+          <div class="opt" onclick="pick(this)">🤝 Partner</div>
+        </div></div>
+      <div class="field"><label>How much do you need? <span class="hint">(a range is fine)</span></label><input placeholder="e.g. AED 150K–250K"></div>
+      <div class="field"><label>Short pitch <span class="hint">(2–3 lines)</span></label><textarea placeholder="What's the opportunity? Traction so far? Why partner with you?"></textarea></div>
+      <button class="btn block" onclick="submitProfile()">Publish profile & browse →</button>`;
+  } else {
+    f.innerHTML = `
+      <div class="field"><label>Your name</label><input placeholder="e.g. Rajesh Mehta"></div>
+      <div class="field"><label>What do you offer?</label>
+        <div class="seg" data-name="offer">
+          <div class="opt on" onclick="pick(this)">💵 Capital</div>
+          <div class="opt" onclick="pick(this)">🧠 Skills & Time</div>
+          <div class="opt" onclick="pick(this)">Both</div>
+        </div></div>
+      <div class="field"><label>Involvement</label>
+        <div class="seg" data-name="mode">
+          <div class="opt on" onclick="pick(this)">Passive (just invest)</div>
+          <div class="opt" onclick="pick(this)">Active (partner)</div>
+        </div></div>
+      <div class="row2">
+        <div class="field"><label>Industries of interest</label><select>${industryOpts}</select></div>
+        <div class="field"><label>Location</label><select><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Other UAE</option></select></div>
+      </div>
+      <div class="field"><label>Budget range <span class="hint">(optional)</span></label><input placeholder="e.g. AED 100K–500K"></div>
+      <div class="field"><label>Short bio <span class="hint">(2–3 lines)</span></label><textarea placeholder="Your background, what you bring, what you look for."></textarea></div>
+      <button class="btn block" onclick="submitProfile()">Publish profile & browse →</button>`;
+  }
+}
+function pick(el){ [...el.parentElement.children].forEach(c=>c.classList.remove('on')); el.classList.add('on'); }
+function submitProfile(){ toast("✅ Profile published! (prototype — not saved). Here's who's out there →"); go('directory'); }
+
+/* ---------------- directory render ---------------- */
+function setSide(s){
+  curSide=s;
+  document.querySelectorAll('#sideFilter .opt').forEach(o=>o.classList.toggle('on',o.dataset.side===s));
+  document.getElementById('dirSub').textContent = s==='founder'
+    ? "Businesses seeking investment or a partner." : "Investors & partners ready to back a business.";
+  // type filter labels swap
+  const ft=document.getElementById('fType');
+  ft.style.display = s==='founder' ? '' : 'none';
+  render();
+}
+function fillIndustries(){
+  const sel=document.getElementById('fIndustry');
+  INDUSTRIES.forEach(i=>{const o=document.createElement('option');o.value=i;o.textContent=i;sel.appendChild(o)});
+}
+function render(){
+  const q=(document.getElementById('q').value||'').toLowerCase();
+  const ind=document.getElementById('fIndustry').value;
+  const type=document.getElementById('fType').value;
+  const grid=document.getElementById('grid'); grid.innerHTML='';
+  let list = curSide==='founder' ? FOUNDERS : INVESTORS;
+  list = list.filter((x,i)=>{
+    const hay = (x.n+' '+(x.b||'')+' '+x.ind+' '+x.p).toLowerCase();
+    if(q && !hay.includes(q)) return false;
+    if(ind && x.ind!==ind) return false;
+    if(curSide==='founder' && type && x.seek!==type) return false;
+    return true;
+  });
+  document.getElementById('empty').style.display = list.length?'none':'block';
+  list.forEach((x,i)=>grid.appendChild(card(x,i)));
+}
+function card(x,i){
+  const el=document.createElement('div'); el.className='card';
+  const initials=x.n.split(' ').map(w=>w[0]).join('').slice(0,2);
+  if(curSide==='founder'){
+    el.innerHTML=`
+      <div class="top">
+        <div class="avatar" style="background:${C(i)}">${initials}</div>
+        <div><h3>${x.b} ${x.v?'<span class="verified">✔ Verified</span>':''}</h3>
+          <div class="meta">${x.n} · ${x.city}</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag brand">${x.ind}</span>
+        <span class="tag">${x.stage}</span>
+        <span class="tag gold">${x.seek==='invest'?'Seeking investment':'Seeking partner'}</span>
+      </div>
+      <p class="pitch">${x.p}</p>
+      <div class="foot"><span class="amount">${x.amt}</span><div style="flex:1"></div>
+        <button class="btn sm" onclick='openDetail(${JSON.stringify(x).replace(/'/g,"&#39;")},"founder",${i})'>View & connect</button></div>`;
+  } else {
+    el.innerHTML=`
+      <div class="top">
+        <div class="avatar" style="background:${C(i)}">${initials}</div>
+        <div><h3>${x.n} ${x.v?'<span class="verified">✔ Verified</span>':''}</h3>
+          <div class="meta">${OFFER_LABEL[x.off]} · ${x.city}</div></div>
+      </div>
+      <div class="tags">
+        <span class="tag brand">${x.ind}</span>
+        <span class="tag">${x.mode==='active'?'Active partner':'Passive investor'}</span>
+      </div>
+      <p class="pitch">${x.p}</p>
+      <div class="foot"><span class="amount">${x.bud}</span><div style="flex:1"></div>
+        <button class="btn sm" onclick='openDetail(${JSON.stringify(x).replace(/'/g,"&#39;")},"investor",${i})'>View & connect</button></div>`;
+  }
+  return el;
+}
+
+/* ---------------- detail + chat ---------------- */
+function openDetail(x,kind,i){
+  const initials=x.n.split(' ').map(w=>w[0]).join('').slice(0,2);
+  const s=document.getElementById('sheet');
+  let rows;
+  if(kind==='founder'){
+    rows=`
+      <div class="kv"><span class="k">Business</span><span>${x.b}</span></div>
+      <div class="kv"><span class="k">Industry</span><span>${x.ind}</span></div>
+      <div class="kv"><span class="k">Stage</span><span>${x.stage}</span></div>
+      <div class="kv"><span class="k">Seeking</span><span>${x.seek==='invest'?'Investment':'Partner'}</span></div>
+      <div class="kv"><span class="k">Amount</span><span>${x.amt}</span></div>
+      <div class="kv"><span class="k">Location</span><span>${x.city}</span></div>`;
+  } else {
+    rows=`
+      <div class="kv"><span class="k">Offers</span><span>${OFFER_LABEL[x.off]}</span></div>
+      <div class="kv"><span class="k">Involvement</span><span>${x.mode==='active'?'Active partner':'Passive investor'}</span></div>
+      <div class="kv"><span class="k">Industry</span><span>${x.ind}</span></div>
+      <div class="kv"><span class="k">Budget</span><span>${x.bud}</span></div>
+      <div class="kv"><span class="k">Location</span><span>${x.city}</span></div>`;
+  }
+  s.innerHTML=`
+    <button class="x" onclick="closeModal()">×</button>
+    <div class="top" style="display:flex;gap:14px;align-items:center;margin-bottom:18px">
+      <div class="avatar" style="width:56px;height:56px;font-size:22px;background:${C(i)}">${initials}</div>
+      <div><h3 style="margin:0;font-size:20px">${kind==='founder'?x.b:x.n} ${x.v?'<span class="verified">✔ Verified</span>':''}</h3>
+        <div class="meta" style="color:var(--muted);font-size:13px">${kind==='founder'?x.n+' · ':''}${x.city}</div></div>
+    </div>
+    <p class="pitch" style="margin:0 0 16px">${x.p}</p>
+    ${rows}
+    <div style="height:18px"></div>
+    <button class="btn block" onclick="openChat(${JSON.stringify(x).replace(/'/g,"&#39;")},'${kind}',${i})">🤝 Express interest & message</button>`;
+  document.getElementById('modal').classList.add('open');
+}
+function openChat(x,kind,i){
+  const name = kind==='founder' ? x.n.split(' ')[0] : x.n.split(' ')[0];
+  const s=document.getElementById('sheet');
+  s.innerHTML=`
+    <button class="x" onclick="closeModal()">×</button>
+    <h3 style="margin:0 0 4px">Chat with ${name}</h3>
+    <div class="meta" style="color:var(--muted);font-size:13px;margin-bottom:12px">${kind==='founder'?x.b:OFFER_LABEL[x.off]} · ${x.city}</div>
+    <div class="offplat">🔒 Keep it safe: verify identity yourself and keep any money or agreement <b>off-platform</b>. Cofundly only introduces you.</div>
+    <div class="chat" id="chat">
+      <div class="bub them">Hi! Thanks for reaching out 👋 What caught your interest?</div>
+      <div class="bub me">Your profile looks like a great fit — I'd love to learn more.</div>
+      <div class="bub them">Great — happy to share more details and hop on a call this week.</div>
+    </div>
+    <div class="chatbar">
+      <input id="msg" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="btn" onclick="sendMsg()">Send</button>
+    </div>`;
+}
+function sendMsg(){
+  const inp=document.getElementById('msg'); const t=inp.value.trim(); if(!t)return;
+  const c=document.getElementById('chat');
+  const b=document.createElement('div');b.className='bub me';b.textContent=t;c.appendChild(b);
+  inp.value=''; c.scrollTop=c.scrollHeight;
+  setTimeout(()=>{const r=document.createElement('div');r.className='bub them';
+    r.textContent="Sounds good — let's set up a call to take it forward 👍";c.appendChild(r);c.scrollTop=c.scrollHeight;},700);
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+
+/* ---------------- waitlist ---------------- */
+// 👉 To collect real emails: create a free form at https://formspree.io,
+//    then paste your form ID below (replace YOUR_ID). Until then it works in demo mode.
+const FORMSPREE_ID = "YOUR_ID";
+async function joinWaitlist(e){
+  e.preventDefault();
+  const email=document.getElementById('wlEmail').value.trim();
+  const msg=document.getElementById('wlMsg');
+  if(FORMSPREE_ID==="YOUR_ID"){
+    msg.textContent="✅ You're on the list! (demo mode — add your Formspree ID to capture real emails)";
+    document.getElementById('wlForm').reset();
+    return false;
+  }
+  try{
+    const r=await fetch("https://formspree.io/f/"+FORMSPREE_ID,{
+      method:"POST",headers:{'Accept':'application/json'},
+      body:new FormData(document.getElementById('wlForm'))});
+    msg.textContent = r.ok ? "✅ You're on the list — we'll be in touch soon!" : "Hmm, something went wrong. Try again?";
+    if(r.ok) document.getElementById('wlForm').reset();
+  }catch{ msg.textContent="Network error — please try again."; }
+  return false;
+}
+
+/* ---------------- toast ---------------- */
+let tt;
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600);}
+
+/* init */
+fillIndustries();
+setSide('founder');
+</script>
+</body>
+</html>
