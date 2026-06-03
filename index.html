@@ -137,7 +137,7 @@
 <header>
   <div class="wrap nav">
     <div class="logo" onclick="go('home')"><span class="dot"></span>Cofundly</div>
-    <span class="pill">UAE · Prototype</span>
+    <span class="pill">UAE · Launching soon</span>
     <div class="spacer"></div>
     <button class="btn sec sm" id="navBrowse" onclick="go('directory')">Browse</button>
     <button class="btn sm" id="navJoin" onclick="go('role')">Join free</button>
@@ -214,7 +214,7 @@
 <section class="page" id="page-profile">
   <div class="wrap">
     <h2 class="title" style="text-align:center" id="formTitle">Create your profile</h2>
-    <p class="sub" style="text-align:center">This is a prototype — nothing is saved to a server.</p>
+    <p class="sub" style="text-align:center">Preview — Cofundly is launching soon. Join the waitlist to get early access.</p>
     <div class="form" id="formBody"></div>
   </div>
 </section>
@@ -336,7 +336,7 @@ function buildForm(role){
   }
 }
 function pick(el){ [...el.parentElement.children].forEach(c=>c.classList.remove('on')); el.classList.add('on'); }
-function submitProfile(){ toast("✅ Profile published! (prototype — not saved). Here's who's out there →"); go('directory'); }
+function submitProfile(){ toast("✅ Looks great! Cofundly is launching soon — here's a preview of who's out there →"); go('directory'); }
 
 /* ---------------- directory render ---------------- */
 function setSide(s){
